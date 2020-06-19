@@ -1,0 +1,17 @@
+#!/bin/bash
+#sudo yum install -y yum-plugin-downloadonly
+#sudo yum install -y yum-utils createrepo httpd
+#sudo yum install -y "Development tools"
+#sudo yum install -y subscription-manager
+#sudo yum install -y epel-release
+#sudo yum install -y device-mapper-persistent-data lvm2
+#sudo yum install -y curl
+#sudo yum install -y git
+#sudo yum install -y python2
+#sudo yum install -y nodejs
+#sudo yum install -y docker-ce docker-ce-cli containerd.io
+#sudo yum install -y docker-compose
+sudo yum install -y --downloadonly --downloaddir=./downloadonly kubelet --disableexcludes=kubernetes
+sudo yum install -y --downloadonly --downloaddir=./downloadonly kubeadm --disableexcludes=kubernetes
+sudo yum install -y --downloadonly --downloaddir=./downloadonly kubectl --disableexcludes=kubernetes
+cd ./downloadonly && curl -LO https://storage.googleapis.com/golang/go1.14.4.linux-amd64.tar.gz -o ./downloadonly/
