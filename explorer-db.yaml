@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: explorer-db
+spec:
+  selector:
+    matchLabels:
+      name: explorer-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: explorer-db
+    spec:
+      volumes:
+      - name: explorer-db
+        persistentVolumeClaim:
+          claimName: explorer
+
+      containers:
+      - name: explorer-db
+        image: hyperledger/explorer-db:latest
+        env:
+        - name: DATABASE_DATABASE
+          value: fabricexplorer
+        - name: DATABASE_USERNAME
+          value: hppoc
+        - name: DATABASE_PASSWORD
+          value: password
+        volumeMounts:
+        - mountPath: /explorer-db
+          name: explorer-db

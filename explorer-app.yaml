@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: explorer-app
+spec:
+  selector:
+    matchLabels:
+      name: explorer-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: explorer-app
+    spec:
+      volumes:
+      - name: explorer
+        persistentVolumeClaim:
+          claimName: explorer
+      containers:
+      - name: explorer-app
+        image: hyperledger/explorer:latest
+        command: ["sh" , "-c" , "mkdir -p /opt/explorer/app/platform/fabric/test"]
+        command: ["sh" , "-c" , "mkdir -p /tmp/crypto/test"]    
+        command: ["sh" , "-c" , "mkdir -p /opt/wallet/test"]   
+        command: ["sh" , "-c" , "cp /explorer-data/examples/net1/config.json /opt/explorer/app/platform/fabric/"]
+        command: ["sh" , "-c" , "cp -rp /explorer-data/examples/net1/connection-profile /opt/explorer/app/platform/fabric/"]
+        command: ["sh" , "-c" , "cp -rp /explorer-data/examples/net1/crypto /tmp/crypto"]          
+        command: ["sh" , "-c" , "node /opt/explorer/main.js && tail -f /dev/null"]
+        env:
+        - name: DATABASE_HOST
+          value: explorer-db
+        - name: DATABASE_DATABASE
+          value: fabricexplorer
+        - name: DATABASE_USERNAME
+          value: hppoc
+        - name: DATABASE_PASSWORD
+          value: password
+        volumeMounts:
+        - mountPath: /explorer-data
+          name: explorer
